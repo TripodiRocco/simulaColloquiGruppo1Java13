@@ -19,9 +19,9 @@ public class Domanda {
     @JoinColumn(name = "colloquio_id")
     private Colloquio colloquio;
 
-    @OneToMany(mappedBy = "domanda")
-    private List<Risposta> risposte;
-
+    @OneToOne(mappedBy = "domanda")
+    //private List<Risposta> risposte;
+    private Risposta risposta;
     public Domanda(Long id, String testoDomanda) {
         this.id = id;
         this.testoDomanda = testoDomanda;
@@ -47,4 +47,7 @@ public class Domanda {
         this.testoDomanda = testoDomanda;
     }
 
+    public void setRisposta(Risposta rispostaUtente) {
+        this.risposta=rispostaUtente;
+    }
 }

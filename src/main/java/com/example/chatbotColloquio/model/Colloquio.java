@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -60,4 +61,11 @@ public class Colloquio {
         this.orario = orario;
     }
 
+    public List<Domanda> getDomandaList() {
+        return domande;
+    }
+
+    public void setUtente(Utente utente) {
+        this.utente=utente;
+    }
 }

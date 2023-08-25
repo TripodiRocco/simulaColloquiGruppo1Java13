@@ -26,7 +26,9 @@ public class Risposta {
     @JoinColumn(name = "utente_id")
     private Utente utente;
 
-
+    public Risposta(String testoRisposta){
+        this.testoRisposta = testoRisposta;
+    }
     public Risposta(Long id, String testoRisposta, Integer punteggio) {
         this.id = id;
         this.testoRisposta = testoRisposta;
