@@ -32,8 +32,7 @@ public class Utente {
     private List<Risposta> risposte;
 
 
-    public Utente(Long id, String username, String password, String nome, String cognome) {
-        this.id = id;
+    public Utente(String username, String password, String nome, String cognome) {
         this.username = username;
         this.password = password;
         this.nome = nome;
@@ -43,6 +42,7 @@ public class Utente {
     public Utente(){
 
     }
+
 
     public Long getId() {
         return id;
