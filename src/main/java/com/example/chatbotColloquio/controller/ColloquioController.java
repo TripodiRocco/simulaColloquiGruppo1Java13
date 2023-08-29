@@ -9,10 +9,7 @@ import com.example.chatbotColloquio.repository.UtenteRepository;
 import com.example.chatbotColloquio.service.GptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -44,6 +41,12 @@ public class ColloquioController {
         return ResponseEntity.ok(primaDomanda.getTestoDomanda());
     }
 
+    //TEST:
+    @GetMapping("/prova")
+    public ResponseEntity<String>  domanda(){
+
+        return ResponseEntity.ok("Test ok");
+    }
     @PostMapping("/risposta")
     public ResponseEntity<String> gestisciRisposta(@RequestParam Long colloquioId, @RequestBody String rispostaTesto) {
         Optional<Colloquio> colloquioOptional = colloquioRepository.findById(colloquioId);

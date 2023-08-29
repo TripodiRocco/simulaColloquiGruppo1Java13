@@ -2,6 +2,7 @@ package com.example.chatbotColloquio.controller;
 
 import com.example.chatbotColloquio.model.Utente;
 import com.example.chatbotColloquio.repository.UtenteRepository;
+import com.example.chatbotColloquio.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,10 @@ public class UtenteController {
     @Autowired
     UtenteRepository utenteRepository;
 
+    @Autowired
+    UtenteService utenteService;
+
+    //READ ALL
     @GetMapping(value = "/listaDiUtenti")
     public ResponseEntity<?> ottieniListaUtenti(){
         List<Utente> listaDiUtenti = utenteRepository.findAll();
@@ -30,6 +35,8 @@ public class UtenteController {
         return ResponseEntity.ok(listaDiUtenti);
     }
 
+
+    //CREATE
     @PostMapping(value = "/creaUtente")
     public ResponseEntity<Utente> creaUtente(@RequestBody Utente utente){
         Utente nuovoUtente = utenteRepository.save(utente);
@@ -54,18 +61,20 @@ public class UtenteController {
         return ResponseEntity.ok("lista utenti creata");
     }
 
+    //UPDATE
     @PutMapping(value = "/modificaUtente/{id}")
-    public ResponseEntity<Utente> modificaUtente(@PathVariable Long id, @RequestParam Utente utente){
-         Utente aggiornaUtente = utenteRepository.findById(id).orElse(null);
+    public ResponseEntity<Utente> modificaUtente(@PathVariable Long id, @RequestBody Utente utente){
+
+        Utente aggiornaUtente = utenteService.updateUtente(id, utente);
+
         if (aggiornaUtente == null){
             return ResponseEntity.notFound().build();
-        } else {
-            aggiornaUtente.setNome(utente.getNome());
-            utenteRepository.save(aggiornaUtente);
         }
-
         return ResponseEntity.ok(aggiornaUtente);
     }
 
+    //DELETE
+
+    //READ BY ID
 
 }
