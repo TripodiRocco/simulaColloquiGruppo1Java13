@@ -3,6 +3,7 @@ package com.example.chatbotColloquio.controller;
 import com.example.chatbotColloquio.model.Utente;
 import com.example.chatbotColloquio.repository.UtenteRepository;
 import com.example.chatbotColloquio.service.UtenteService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,17 @@ public class UtenteController {
 
     @Autowired
     UtenteService utenteService;
+
+    //READ USER BY ID
+
+    @GetMapping(value = "/findById/{id}")
+    public ResponseEntity<Utente> ricercaUtente(@PathVariable Long id){
+        Utente utente = utenteRepository.findById(id).orElse(null);
+        if(utente == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(utente);
+    }
 
     //READ ALL
     @GetMapping(value = "/listaDiUtenti")
@@ -75,6 +87,16 @@ public class UtenteController {
 
     //DELETE
 
-    //READ BY ID
+    @DeleteMapping(value = "/eliminaUtente/{id}")
+    public ResponseEntity<String> eliminaUtente(@PathVariable Long id) {
+
+        try {
+            Utente user =  utenteService.deleteUtente(id);
+            return ResponseEntity.ok("Utente "+ user.getNome() + " eliminato con successo");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore" +
+                    " durante l'eliminazione dell'utente:\nutente non trovato");
+        }
+    }
 
 }

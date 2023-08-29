@@ -32,4 +32,11 @@ public class UtenteService {
 
     }
 
+    public Utente deleteUtente(Long id){
+        Utente user = utenteRepository.findById(id).orElse(null);
+        assert user != null;
+        utenteRepository.delete(user);
+        return  user;
+    }
+
 }
