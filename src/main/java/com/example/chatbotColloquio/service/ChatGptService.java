@@ -5,17 +5,10 @@ import com.example.chatbotColloquio.model.Domanda;
 import com.example.chatbotColloquio.model.Risposta;
 import com.example.chatbotColloquio.repository.ColloquioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class ChatGptService implements GptService{
-    @Autowired
-    private RestTemplate restTemplate;
     @Autowired
     private ColloquioRepository colloquioRepository;
 
@@ -49,37 +42,10 @@ public class ChatGptService implements GptService{
         colloquioRepository.save(colloquio);
     }
 
-    private Domanda chiamataApiGenerazioneGpt2(Colloquio colloquio) {
+    private Domanda chiamataApiGenerazioneGpt(Colloquio colloquio) {
         // Effettua una chiamata all'API di ChatGPT per generare una domanda
         // Restituisci la domanda generata
         return null; // domandaGenerata;
-
-
-
-
-    }
-
-    private Domanda chiamataApiGenerazioneGpt(Colloquio colloquio) {
-        // Configura l'URL dell'API di generazione GPT
-        String apiUrl = "URL_API_GPT";
-
-        // Costruisci il corpo della richiesta (può variare in base alle API)
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("colloquioId", colloquio.getId()); // Esempio di dato da inviare
-
-        // Configura l'header della richiesta (può variare in base alle API)
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer TOKEN_GPT"); // Esempio di token di autenticazione
-
-        // Costruisci l'oggetto della richiesta
-        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-
-        // Effettua la chiamata all'API
-        ResponseEntity<Domanda> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, Domanda.class);
-
-        // Restituisci la domanda generata dalla risposta dell'API
-        return responseEntity.getBody();
     }
 
     private int chiamataApiValutazioneGpt(String rispostaUtente) {
