@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -23,8 +24,8 @@ public class ColloquioController {
 
     @Autowired
     private UtenteRepository utenteRepository;
-    @PostMapping("/inizia")
-    public ResponseEntity<String> iniziaColloquio(@RequestParam Long utenteId) {
+    @PostMapping("/inizia/{utenteId}")
+    public ResponseEntity<String> iniziaColloquio(@PathVariable Long utenteId) {
 
         Utente utente = utenteRepository.findById(utenteId).orElse(null);
         if(utente == null){
@@ -33,6 +34,14 @@ public class ColloquioController {
 
         Colloquio nuovoColloquio = new Colloquio();
         nuovoColloquio.setUtente(utente);
+
+        nuovoColloquio.setArgomentoColloquio("Java");
+        nuovoColloquio.setDifficolta(5);
+        nuovoColloquio.setUtente(utente);
+        LocalDateTime nuovoOrario = LocalDateTime.of(2023, 8, 30, 10, 0);
+        nuovoColloquio.setOrario(nuovoOrario);
+
+
         colloquioRepository.save(nuovoColloquio);
 
         Domanda primaDomanda = gptService.generaDomanda(nuovoColloquio);

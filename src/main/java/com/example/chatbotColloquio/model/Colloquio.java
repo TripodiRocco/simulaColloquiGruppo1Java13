@@ -26,7 +26,7 @@ public class Colloquio {
 
 
     @OneToMany(mappedBy = "colloquio")
-    private List<Domanda> domande;
+    private List<Domanda> domande = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "utente_id")
@@ -38,6 +38,7 @@ public class Colloquio {
         this.orario = orario;
         this.difficolta = difficolta;
         this.argomentoColloquio = argomentoColloquio;
+        this.domande = new ArrayList<>();
     }
 
 
@@ -67,5 +68,17 @@ public class Colloquio {
 
     public void setUtente(Utente utente) {
         this.utente=utente;
+    }
+
+    public void setArgomentoColloquio(String argomentoColloquio) {
+        this.argomentoColloquio = argomentoColloquio;
+    }
+
+    public void setDifficolta(int difficolta) {
+        this.difficolta=difficolta;
+    }
+
+    public String getArgomentoColloquio() {
+        return this.argomentoColloquio;
     }
 }
