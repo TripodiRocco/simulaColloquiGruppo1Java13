@@ -77,12 +77,12 @@ public class UtenteController {
     @PutMapping(value = "/modificaUtente/{id}")
     public ResponseEntity<Utente> modificaUtente(@PathVariable Long id, @RequestBody Utente utente){
 
-        Utente aggiornaUtente = utenteService.updateUtente(id, utente);
+        Optional<Utente> aggiornaUtente = utenteService.updateUtente(id, utente);
 
-        if (aggiornaUtente == null){
+        if (aggiornaUtente.isPresent()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(aggiornaUtente);
+        return ResponseEntity.ok(aggiornaUtente.get());
     }
 
     //DELETE

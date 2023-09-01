@@ -20,24 +20,24 @@ public class ColloquioController {
     private GptService gptService;
 
     @Autowired
-    private ColloquioRepository colloquioRepository;
+    private ColloquioRepository colloquioRepository;    // cancellare
 
     @Autowired
-    private UtenteRepository utenteRepository;
+    private UtenteRepository utenteRepository;  // cancellare
     @PostMapping("/inizia/{utenteId}")
     public ResponseEntity<String> iniziaColloquio(@PathVariable Long utenteId) {
 
-        Utente utente = utenteRepository.findById(utenteId).orElse(null);
-        if(utente == null){
+        Optional<Utente> utente = utenteRepository.findById(utenteId);
+        if(!utente.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
         Colloquio nuovoColloquio = new Colloquio();
-        nuovoColloquio.setUtente(utente);
+        nuovoColloquio.setUtente(utente.get());
 
         nuovoColloquio.setArgomentoColloquio("Java");
         nuovoColloquio.setDifficolta(5);
-        nuovoColloquio.setUtente(utente);
+        nuovoColloquio.setUtente(utente.get());
         LocalDateTime nuovoOrario = LocalDateTime.of(2023, 8, 30, 10, 0);
         nuovoColloquio.setOrario(nuovoOrario);
 

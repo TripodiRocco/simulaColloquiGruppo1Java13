@@ -5,6 +5,8 @@ import com.example.chatbotColloquio.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UtenteService {
 
@@ -12,23 +14,20 @@ public class UtenteService {
     UtenteRepository utenteRepository;
 
 
-    public Utente updateUtente(Long id, Utente utente){
-        Utente user = utenteRepository.findById(id).orElse(null);
+    public Optional<Utente> updateUtente(Long id, Utente utente){
+        Optional<Utente> user = utenteRepository.findById(id);
 
-        if(user != null) {
+        if(user.isPresent()) {
             //user.setId(utente.getId());
-            if (utente.getNome() != null)
-                user.setNome(utente.getNome());
-            if (utente.getCognome() != null)
-                user.setCognome(utente.getCognome());
-            if (utente.getPassword() != null)
-                user.setPassword(utente.getPassword());
-            if (utente.getUsername() != null)
-                user.setUsername(utente.getUsername());
+                user.get().setNome(utente.getNome());
+                user.get().setCognome(utente.getCognome());
+                user.get().setPassword(utente.getPassword());
+                user.get().setUsername(utente.getUsername());
 
-            return utenteRepository.save(user);
+             utenteRepository.save(user.get());
+             return user;
         }else
-            return null;
+            return Optional.empty();
 
     }
 
