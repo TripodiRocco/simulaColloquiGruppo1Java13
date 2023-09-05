@@ -15,13 +15,20 @@ public class Risposta {
     private String testoRisposta;
 
     @Column(nullable = false)
+    private String testoValutazioneGpt;
+
+
+    @Column(nullable = false)
     private Integer punteggio; //serve a salvare la valutazione della risposta
 
 
-    @ManyToOne
+   // @ManyToOne
+   // @JoinColumn(name = "domanda_id")
+   // private Domanda domanda;
+
+    @OneToOne
     @JoinColumn(name = "domanda_id")
     private Domanda domanda;
-
     @ManyToOne
     @JoinColumn(name = "utente_id")
     private Utente utente;
@@ -63,4 +70,19 @@ public class Risposta {
         this.punteggio = punteggio;
     }
 
+    public String getTestoValutazioneGpt() {
+        return testoValutazioneGpt;
+    }
+
+    public void setTestoValutazioneGpt(String testoValutazioneGpt) {
+        this.testoValutazioneGpt = testoValutazioneGpt;
+    }
+
+    public Domanda getDomanda() {
+        return domanda;
+    }
+
+    public void setDomanda(Domanda domanda) {
+        this.domanda = domanda;
+    }
 }

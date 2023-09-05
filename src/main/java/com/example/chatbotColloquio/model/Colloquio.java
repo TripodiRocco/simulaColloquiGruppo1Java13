@@ -25,9 +25,9 @@ public class Colloquio {
     private String argomentoColloquio;
 
 
-    @OneToMany(mappedBy = "colloquio")
-    private List<Domanda> domande = new ArrayList<>();
+    @OneToMany(mappedBy = "colloquio",cascade = CascadeType.ALL,orphanRemoval = true)
 
+    private List<Domanda> domande = new ArrayList<>() ;
     @ManyToOne
     @JoinColumn(name = "utente_id")
     private Utente utente;
@@ -38,7 +38,7 @@ public class Colloquio {
         this.orario = orario;
         this.difficolta = difficolta;
         this.argomentoColloquio = argomentoColloquio;
-        this.domande = new ArrayList<>();
+        //this.domande = new ArrayList<>();
     }
 
 
@@ -63,7 +63,11 @@ public class Colloquio {
     }
 
     public List<Domanda> getDomandaList() {
-        return domande;
+        return this.domande;
+    }
+
+    public void setDomande(Domanda domanda) {
+        this.domande.add(domanda) ;
     }
 
     public void setUtente(Utente utente) {

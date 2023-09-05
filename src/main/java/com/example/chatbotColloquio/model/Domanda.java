@@ -15,13 +15,27 @@ public class Domanda {
     @Column(nullable = false)
     private String testoDomanda;
 
+    //@Column(nullable = false)
+    // private String testo;
+
     @ManyToOne
     @JoinColumn(name = "colloquio_id")
     private Colloquio colloquio;
 
-    @OneToOne(mappedBy = "domanda")
-    //private List<Risposta> risposte;
-    private Risposta risposta;
+    public Colloquio getColloquio() {
+        return colloquio;
+    }
+
+    public void setColloquio(Colloquio colloquio) {
+        this.colloquio = colloquio;
+    }
+
+   // @OneToOne(mappedBy = "domanda")
+    //private Risposta risposta;
+   @OneToOne(mappedBy = "domanda", cascade = CascadeType.ALL)
+   private Risposta risposta;
+
+
     public Domanda(Long id, String testoDomanda) {
         this.id = id;
         this.testoDomanda = testoDomanda;
@@ -49,5 +63,10 @@ public class Domanda {
 
     public void setRisposta(Risposta rispostaUtente) {
         this.risposta=rispostaUtente;
+    }
+
+
+    public void setRispostaGpt(String rispostaGpt){
+        this.risposta.setTestoValutazioneGpt(rispostaGpt);
     }
 }

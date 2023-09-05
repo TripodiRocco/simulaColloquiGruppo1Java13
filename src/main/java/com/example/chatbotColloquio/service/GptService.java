@@ -7,5 +7,5 @@ import com.example.chatbotColloquio.model.Risposta;
 public interface GptService {
 
     Domanda generaDomanda(Colloquio colloquio);
-    void valutaERispondi(Colloquio colloquio, Domanda domanda, Risposta risposta);
+    String valutaERispondi(Colloquio colloquio, Domanda domanda, Risposta risposta);
 }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +32,6 @@ public class ColloquioController {
         if(!utente.isPresent()){
             return ResponseEntity.notFound().build();
         }
-
         Colloquio nuovoColloquio = new Colloquio();
         nuovoColloquio.setUtente(utente.get());
 
@@ -41,37 +41,54 @@ public class ColloquioController {
         LocalDateTime nuovoOrario = LocalDateTime.of(2023, 8, 30, 10, 0);
         nuovoColloquio.setOrario(nuovoOrario);
 
-
-        colloquioRepository.save(nuovoColloquio);
-
         Domanda primaDomanda = gptService.generaDomanda(nuovoColloquio);
 
         // Restituisci la prima domanda come risposta al client
-        return ResponseEntity.ok(primaDomanda.getTestoDomanda());
+        return ResponseEntity.ok("Colloquio ID: " +nuovoColloquio.getId() + "\n" + primaDomanda.getTestoDomanda());
     }
 
-    //TEST:
-    @GetMapping("/prova")
-    public ResponseEntity<String>  domanda(){
-
-        return ResponseEntity.ok("Test ok");
+    //////////////////TEST:
+    @GetMapping(value = "/listaDiDomande/{id}")
+    public ResponseEntity<?> ottieniListaUtenti(@PathVariable Long id){
+        Colloquio colloquio = colloquioRepository.findById(id).orElse(null);
+        Domanda domanda2 = colloquioRepository.findById(id).get().getDomandaList().get(0);
+        assert colloquio != null;
+        List<Domanda> listaDiDomande = colloquio.getDomandaList();
+        Domanda domanda = listaDiDomande.get(0);
+        if (domanda == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("domande esistono");
     }
-    @PostMapping("/risposta")
-    public ResponseEntity<String> gestisciRisposta(@RequestParam Long colloquioId, @RequestBody String rispostaTesto) {
+    /////////////////////////
+
+    @PostMapping("/risposta/{colloquioId}")
+    public ResponseEntity<String> gestisciRisposta(@PathVariable Long colloquioId ,@RequestBody String rispostaTesto) {
         Optional<Colloquio> colloquioOptional = colloquioRepository.findById(colloquioId);
+
         if (colloquioOptional.isPresent()) {
             Colloquio colloquio = colloquioOptional.get();
-            Domanda ultimaDomanda = colloquio.getDomandaList().get(colloquio.getDomandaList().size() - 1);
-            Risposta risposta = new Risposta(rispostaTesto);
-
-            gptService.valutaERispondi(colloquio, ultimaDomanda, risposta);
-
-            Domanda prossimaDomanda = gptService.generaDomanda(colloquio);
-
-            // Restituisci la prossima domanda come risposta al client
-            return ResponseEntity.ok(prossimaDomanda.getTestoDomanda());
+            // Verifica se la lista delle domande è vuota
+            if (!colloquio.getDomandaList().isEmpty()) {
+                Domanda ultimaDomanda = colloquio.getDomandaList().get(colloquio.getDomandaList().size() - 1);
+                Risposta rispostaUtente = new Risposta();
+                rispostaUtente.setTestoRisposta(rispostaTesto);
+                String commentoAllaRisposta = gptService.valutaERispondi(colloquio, ultimaDomanda, rispostaUtente);
+                Domanda prossimaDomanda = gptService.generaDomanda(colloquio);
+                // Restituisci la prossima domanda come risposta al client
+                return ResponseEntity.ok("Punteggio ottenuto = " + rispostaUtente.getPunteggio() + "\nValutazione alla risposta :" + rispostaTesto + "\nCommento: " + commentoAllaRisposta
+                        + "\nQuesta è la prossima domanda: \n" + prossimaDomanda.getTestoDomanda());
+            } else {
+                // Gestisci il caso in cui la lista delle domande è vuota
+                return ResponseEntity.badRequest().body("La lista delle domande è vuota.");
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
+
+
+
+
 }
