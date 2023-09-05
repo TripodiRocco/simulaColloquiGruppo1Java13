@@ -3,6 +3,10 @@ package com.example.chatbotColloquio.controller;
 import com.example.chatbotColloquio.model.Utente;
 import com.example.chatbotColloquio.repository.UtenteRepository;
 import com.example.chatbotColloquio.service.UtenteService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +20,7 @@ import java.util.Optional;
 
 
 @RestController
+@Tag(name = "Gestione utenti", description = "API per la gestione degli utenti")
 public class UtenteController {
 
     @Autowired
@@ -27,6 +32,7 @@ public class UtenteController {
     //READ USER BY ID
 
     @GetMapping(value = "/findById/{id}")
+    @Operation(summary = "Ricerca un utente specifico inserendo il suo identificativo")
     public ResponseEntity<Utente> ricercaUtente(@PathVariable Long id){
         Utente utente = utenteRepository.findById(id).orElse(null);
         if(utente == null){
@@ -37,6 +43,7 @@ public class UtenteController {
 
     //READ ALL
     @GetMapping(value = "/listaDiUtenti")
+    @Operation(summary = "Ritorna indietro un elenco degli utenti memorizzato nel database")
     public ResponseEntity<?> ottieniListaUtenti(){
         List<Utente> listaDiUtenti = utenteRepository.findAll();
 
@@ -50,6 +57,7 @@ public class UtenteController {
 
     //CREATE
     @PostMapping(value = "/creaUtente")
+    @Operation(summary = "Crea un utente inserendo i parametri richiesti, seguendo l'esempio")
     public ResponseEntity<Utente> creaUtente(@RequestBody Utente utente){
         Utente nuovoUtente = utenteRepository.save(utente);
         return ResponseEntity.ok(nuovoUtente);
@@ -59,6 +67,7 @@ public class UtenteController {
     // DA ELIMINARE IN SEGUITO, SOLO PER PROVA
 
     @GetMapping(value = "/aggiungiUtenti")
+    @Operation(summary = "Carica un elenco di utenti pronto per essere memorizzato nel database")
     public ResponseEntity<String> aggiungiUtente(){
         Utente utente1 = new Utente("rocchino", "ciao", "Rocco", "Tripodi");
         Utente utente2 = new Utente("giuseppino", "ciao2", "Giuseppe", "Bronzellino");
@@ -75,6 +84,7 @@ public class UtenteController {
 
     //UPDATE
     @PutMapping(value = "/modificaUtente/{id}")
+    @Operation(summary = "Modifica identificativo e altri parametri di un utente")
     public ResponseEntity<Utente> modificaUtente(@PathVariable Long id, @RequestBody Utente utente){
 
         Optional<Utente> aggiornaUtente = utenteService.updateUtente(id, utente);
@@ -88,6 +98,7 @@ public class UtenteController {
     //DELETE
 
     @DeleteMapping(value = "/eliminaUtente/{id}")
+    @Operation(summary = "Elimina l'intero utente")
     public ResponseEntity<String> eliminaUtente(@PathVariable Long id) {
 
         try {
