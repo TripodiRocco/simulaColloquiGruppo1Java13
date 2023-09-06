@@ -5,18 +5,31 @@ import com.example.chatbotColloquio.model.Domanda;
 import com.example.chatbotColloquio.model.Colloquio;
 import com.example.chatbotColloquio.model.Utente;
 import com.example.chatbotColloquio.repository.ColloquioRepository;
+import com.example.chatbotColloquio.repository.DomandaRepository;
+import com.example.chatbotColloquio.repository.RispostaRepository;
 import com.example.chatbotColloquio.repository.UtenteRepository;
+import com.example.chatbotColloquio.service.ColloquioService;
 import com.example.chatbotColloquio.service.GptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class ColloquioController {
+
+    @Autowired
+    private DomandaRepository domandaRepository;
+
+    @Autowired
+    private RispostaRepository rispostaRepository;
+    @Autowired
+    private ColloquioService colloquioService;
     @Autowired
     private GptService gptService;
 
@@ -76,7 +89,7 @@ public class ColloquioController {
                 String commentoAllaRisposta = gptService.valutaERispondi(colloquio, ultimaDomanda, rispostaUtente);
                 Domanda prossimaDomanda = gptService.generaDomanda(colloquio);
                 // Restituisci la prossima domanda come risposta al client
-                return ResponseEntity.ok("Punteggio ottenuto = " + rispostaUtente.getPunteggio() + "\nValutazione alla risposta :" + rispostaTesto + "\nCommento: " + commentoAllaRisposta
+                return ResponseEntity.ok("Punteggio ottenuto = " + rispostaUtente.getPunteggio() + "\nValutazione alla risposta utente:" + rispostaTesto + "\nCommento: " + commentoAllaRisposta
                         + "\nQuesta è la prossima domanda: \n" + prossimaDomanda.getTestoDomanda());
             } else {
                 // Gestisci il caso in cui la lista delle domande è vuota
@@ -88,7 +101,59 @@ public class ColloquioController {
 
     }
 
+    @GetMapping(value = "/domandeProva2")
+    public ResponseEntity<?> listaProva() {
+        try {
+            // Creazione di un esempio di colloquio
+            Utente utenteP = new Utente("Vin", "Mer", "VINME", "CIAO");
+            utenteRepository.save(utenteP);
 
+            Colloquio colloquio = new Colloquio();
+            colloquio.setArgomentoColloquio("Java");
+            colloquio.setDifficolta(5);
+            colloquio.setUtente(utenteP);
+            LocalDateTime nuovoOrario = LocalDateTime.of(2023, 8, 30, 10, 0);
+            colloquio.setOrario(nuovoOrario);
+
+            // Creazione di domande e risposte associate al colloquio
+            Domanda domanda1 = new Domanda("Domanda1");
+            Risposta risposta1 = new Risposta("Risposta Utente 1");
+            risposta1.setTestoValutazioneGpt("Commento GPT 1");
+            risposta1.setPunteggio(10);
+
+            domanda1.setRisposta(risposta1);
+            domanda1.setColloquio(colloquio);
+
+            // Aggiunta delle domande al colloquio
+            colloquio.getDomandaList().add(domanda1);
+
+            // Salvare il colloquio dopo aver aggiunto le domande
+            colloquioRepository.save(colloquio);
+
+            // Salvare le entità collegate
+            domandaRepository.save(domanda1);
+            rispostaRepository.save(risposta1);
+
+            // Restituzione del colloquio completo con domande e risposte
+            return ResponseEntity.ok(colloquio);
+        } catch (Exception e) {
+            // Gestione dell'eccezione e invio di una risposta HTTP adeguata
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'elaborazione della richiesta.");
+        }
+    }
+
+
+    @GetMapping("/{colloquioId}/domande-risposte")
+    public ResponseEntity<?> getDomandeRisposteByColloquio(@PathVariable Long colloquioId) {
+        Optional<List<Domanda>> domandeOptional = colloquioService.getDomandeRisposteByColloquio(colloquioId);
+
+        if (domandeOptional.isPresent()) {
+            List<Domanda> domande = domandeOptional.get();
+            return ResponseEntity.ok(domande);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 }

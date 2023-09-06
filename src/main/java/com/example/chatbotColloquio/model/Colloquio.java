@@ -1,5 +1,7 @@
 package com.example.chatbotColloquio.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,10 +26,11 @@ public class Colloquio {
     @Column(nullable = false)
     private String argomentoColloquio;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "colloquio",cascade = CascadeType.ALL,orphanRemoval = true)
-
     private List<Domanda> domande = new ArrayList<>() ;
+
+
     @ManyToOne
     @JoinColumn(name = "utente_id")
     private Utente utente;
@@ -62,9 +65,11 @@ public class Colloquio {
         this.orario = orario;
     }
 
+    @JsonProperty("domande")
     public List<Domanda> getDomandaList() {
         return this.domande;
     }
+
 
     public void setDomande(Domanda domanda) {
         this.domande.add(domanda) ;

@@ -1,8 +1,8 @@
 package com.example.chatbotColloquio.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 @Table (name = "domanda")
@@ -15,9 +15,20 @@ public class Domanda {
     @Column(nullable = false)
     private String testoDomanda;
 
+    //@OneToOne
+    //@JoinColumn(name = "risposta_id")
+    //private Risposta risposta;
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "risposta_id")
+    private Risposta risposta;
+
+
+
     //@Column(nullable = false)
     // private String testo;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "colloquio_id")
     private Colloquio colloquio;
@@ -30,14 +41,8 @@ public class Domanda {
         this.colloquio = colloquio;
     }
 
-   // @OneToOne(mappedBy = "domanda")
-    //private Risposta risposta;
-   @OneToOne(mappedBy = "domanda", cascade = CascadeType.ALL)
-   private Risposta risposta;
 
-
-    public Domanda(Long id, String testoDomanda) {
-        this.id = id;
+    public Domanda(String testoDomanda) {
         this.testoDomanda = testoDomanda;
     }
 
@@ -61,12 +66,19 @@ public class Domanda {
         this.testoDomanda = testoDomanda;
     }
 
-    public void setRisposta(Risposta rispostaUtente) {
-        this.risposta=rispostaUtente;
+
+/*
+    public void setRispostaGpt(String rispostaGpt){
+       this.risposta.setTestoValutazioneGpt(rispostaGpt);
     }
 
+    public void setRispostaUtente(String rispostaUtente){
+        this.risposta.setTestoRisposta(rispostaUtente);
+    }
 
-    public void setRispostaGpt(String rispostaGpt){
-        this.risposta.setTestoValutazioneGpt(rispostaGpt);
+*/
+
+    public void setRisposta(Risposta risposta) {
+        this.risposta = risposta;
     }
 }
