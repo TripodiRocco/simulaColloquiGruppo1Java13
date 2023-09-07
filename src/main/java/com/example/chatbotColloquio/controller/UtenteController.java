@@ -5,6 +5,7 @@ import com.example.chatbotColloquio.repository.UtenteRepository;
 import com.example.chatbotColloquio.service.UtenteService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.catalina.User;

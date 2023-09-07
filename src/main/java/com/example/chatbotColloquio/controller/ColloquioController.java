@@ -10,6 +10,8 @@ import com.example.chatbotColloquio.repository.RispostaRepository;
 import com.example.chatbotColloquio.repository.UtenteRepository;
 import com.example.chatbotColloquio.service.ColloquioService;
 import com.example.chatbotColloquio.service.GptService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "Gestione colloquio", description = "API per la gestione del colloquio")
 public class ColloquioController {
 
     @Autowired
@@ -38,7 +41,10 @@ public class ColloquioController {
 
     @Autowired
     private UtenteRepository utenteRepository;  // cancellare
+
+
     @PostMapping("/inizia/{utenteId}")
+    @Operation(summary = "Inserito l'identificativo dell'utente da colloquiare, permette di iniziare il colloquio rivelando la domanda")
     public ResponseEntity<String> iniziaColloquio(@PathVariable Long utenteId) {
 
         Optional<Utente> utente = utenteRepository.findById(utenteId);
@@ -60,6 +66,8 @@ public class ColloquioController {
         return ResponseEntity.ok("Colloquio ID: " +nuovoColloquio.getId() + "\n" + primaDomanda.getTestoDomanda());
     }
 
+
+
     //////////////////TEST:
     @GetMapping(value = "/listaDiDomande/{id}")
     public ResponseEntity<?> ottieniListaUtenti(@PathVariable Long id){
@@ -76,6 +84,7 @@ public class ColloquioController {
     /////////////////////////
 
     @PostMapping("/risposta/{colloquioId}")
+    @Operation(summary = "Inserito l'identificativo dell'utente, egli può rispondere alla domanda posta dal recruiter, che assegna un punteggio da 1 a 9 al candidato per il grado di conoscenza a cui segue un commento; e si prosegue con la prossima domanda")
     public ResponseEntity<String> gestisciRisposta(@PathVariable Long colloquioId ,@RequestBody String rispostaTesto) {
         Optional<Colloquio> colloquioOptional = colloquioRepository.findById(colloquioId);
 
