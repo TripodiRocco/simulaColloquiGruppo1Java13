@@ -90,4 +90,8 @@ public class Colloquio {
     public String getArgomentoColloquio() {
         return this.argomentoColloquio;
     }
+
+    public Utente getUtente() {
+        return utente;
+    }
 }

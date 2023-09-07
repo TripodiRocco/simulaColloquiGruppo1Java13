@@ -78,6 +78,10 @@ public class Domanda {
 
 */
 
+    public Risposta getRisposta() {
+        return risposta;
+    }
+
     public void setRisposta(Risposta risposta) {
         this.risposta = risposta;
     }

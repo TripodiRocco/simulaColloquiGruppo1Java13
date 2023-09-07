@@ -5,6 +5,7 @@ import com.example.chatbotColloquio.model.Domanda;
 import com.example.chatbotColloquio.model.Risposta;
 import com.example.chatbotColloquio.repository.ColloquioRepository;
 import com.example.chatbotColloquio.repository.DomandaRepository;
+import com.example.chatbotColloquio.repository.RispostaRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ import java.net.URL;
 public class ChatGptService implements GptService{
     // private static final String GPT_API_URL = "https://api.openai.com/v1/engines/gpt-3.5-turbo/completions";
     private static final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
-    private String apiKey = ""; // chiave API
+    private String apiKey = "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"; // chiave API
     private String model = "gpt-3.5-turbo";
 
     @Autowired
@@ -27,6 +28,8 @@ public class ChatGptService implements GptService{
     @Autowired
     private DomandaRepository domandaRepository;
 
+    @Autowired
+    private RispostaRepository rispostaRepository;
     @Override
     public Domanda generaDomanda(Colloquio colloquio) {
         Domanda domandaGenerata = chiamataApiGenerazioneGpt(colloquio);
@@ -53,33 +56,29 @@ public class ChatGptService implements GptService{
     @Override
     public String valutaERispondi(Colloquio colloquio, Domanda domanda, Risposta rispostaUtente) {
         // prompt per GPT
-        String prompt = "Che ne pensi della risposta: " + rispostaUtente.getTestoRisposta() + " alla seguente domanda :" + domanda.getTestoDomanda() + " .Infine dammi anche un punteggio da 1 a 9 scrivendolo sempre su una nuova riga e sempre nel formato PUNTEGGIO:punteggio";
+        String prompt = "Dammi un parere di una riga della risposta: " + rispostaUtente.getTestoRisposta() + " alla seguente domanda :" + domanda.getTestoDomanda() + " .Infine dammi anche un punteggio da 1 a 9 scrivendolo sempre su una nuova riga e sempre nel formato PUNTEGGIO:punteggio";
         // Ottiene una valutazione da GPT
         String commento = generateGptResponse(prompt);
         // Estrae il punteggio dalla risposta
         int punteggio = estrarrePunteggioDaRispostaGpt(commento);
 
-        //Setto la risposta nella domanda
 
-        // rispostaUtente.setDomanda(domanda);
-        // Salva il punteggio nella risposta dell'utente
+        rispostaUtente.setTestoRisposta(rispostaUtente.getTestoRisposta());
+        rispostaUtente.setTestoValutazioneGpt(commento);
         rispostaUtente.setPunteggio(punteggio);
+        rispostaUtente.setId(colloquio.getUtente().getId());
+        ///////
+        domanda.setRisposta(rispostaUtente);
+        rispostaUtente.setDomanda(domanda);
 
-        //rispostaUtente.setTestoValutazioneGpt(commento);
-        // Salva la risposta dell'utente nel database (se necessario)
-        // rispostaRepository.save(rispostaUtente);
-        // domanda.setRisposta(rispostaUtente);
-        // domanda.setRispostaGpt(commento);
 
-        //setto colloquio nella domanda
-        // domanda.setColloquio(colloquio);
-        // colloquio.getDomandaList().add(domanda);
-        // colloquioRepository.save(colloquio);
 
+        domandaRepository.save(domanda);
+        rispostaRepository.save(rispostaUtente);;
+        colloquioRepository.save(colloquio);
 
         return commento;
 
-      //  return rispostaUtente;
     }
 
 
