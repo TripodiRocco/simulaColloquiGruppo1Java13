@@ -3,19 +3,13 @@ package com.example.chatbotColloquio.controller;
 import com.example.chatbotColloquio.model.Utente;
 import com.example.chatbotColloquio.repository.UtenteRepository;
 import com.example.chatbotColloquio.service.UtenteService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +28,13 @@ public class UtenteController {
 
     @GetMapping(value = "/findById/{id}")
     @Operation(summary = "Ricerca un utente specifico inserendo il suo identificativo")
-    public ResponseEntity<Utente> ricercaUtente(@PathVariable Long id){
-        Utente utente = utenteRepository.findById(id).orElse(null);
-        if(utente == null){
+    public ResponseEntity<Optional<Utente>> ricercaUtente(@PathVariable Long id){
+        Optional<Utente> utenteOptional = utenteRepository.findById(id);
+        // Utente utente = utenteRepository.findById(id).orElse(null);              // SOSTITUZIONE CON OPTIONAL
+        if(!utenteOptional.isPresent()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(utente);
+        return ResponseEntity.ok(utenteOptional);
     }
 
     //READ ALL

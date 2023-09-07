@@ -33,7 +33,7 @@ public class UtenteService {
 
     public Utente deleteUtente(Long id){
         Utente user = utenteRepository.findById(id).orElse(null);
-        assert user != null;
+        assert user != null;    // DA VEDERE ANCHE QUI SE SOSTITUIRE O MENO
         utenteRepository.delete(user);
         return  user;
     }

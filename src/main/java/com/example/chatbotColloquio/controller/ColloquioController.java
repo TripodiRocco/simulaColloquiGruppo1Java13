@@ -76,7 +76,7 @@ public class ColloquioController {
         assert colloquio != null;
         List<Domanda> listaDiDomande = colloquio.getDomandaList();
         Domanda domanda = listaDiDomande.get(0);
-        if (domanda == null){
+        if (domanda == null){                           // COME SOSTITUIRE QUI
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("domande esistono");
