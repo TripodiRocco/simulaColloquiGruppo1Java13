@@ -19,6 +19,13 @@ public class Domanda {
     //@JoinColumn(name = "risposta_id")
     //private Risposta risposta;
 
+    //@Column(nullable = false)
+    // private String testo;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "colloquio_id")
+    private Colloquio colloquio;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "risposta_id")
@@ -26,12 +33,7 @@ public class Domanda {
 
 
 
-    //@Column(nullable = false)
-    // private String testo;
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "colloquio_id")
-    private Colloquio colloquio;
+
 
     public Colloquio getColloquio() {
         return colloquio;

@@ -3,9 +3,11 @@ package com.example.chatbotColloquio.service;
 import com.example.chatbotColloquio.model.Colloquio;
 import com.example.chatbotColloquio.model.Domanda;
 import com.example.chatbotColloquio.model.Risposta;
+import com.example.chatbotColloquio.model.Utente;
 import com.example.chatbotColloquio.repository.ColloquioRepository;
 import com.example.chatbotColloquio.repository.DomandaRepository;
 import com.example.chatbotColloquio.repository.RispostaRepository;
+import com.example.chatbotColloquio.repository.UtenteRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,9 +22,11 @@ import java.net.URL;
 public class ChatGptService implements GptService{
     // private static final String GPT_API_URL = "https://api.openai.com/v1/engines/gpt-3.5-turbo/completions";
     private static final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
-    private String apiKey = "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"; // chiave API
+    private String apiKey = "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"; // chiave API
     private String model = "gpt-3.5-turbo";
 
+    @Autowired
+    private UtenteRepository utenteRepository;
     @Autowired
     private ColloquioRepository colloquioRepository;
     @Autowired
@@ -32,11 +36,19 @@ public class ChatGptService implements GptService{
     private RispostaRepository rispostaRepository;
     @Override
     public Domanda generaDomanda(Colloquio colloquio) {
+        colloquioRepository.save(colloquio);
         Domanda domandaGenerata = chiamataApiGenerazioneGpt(colloquio);
+        /*
+    Domanda domandaGenerata = chiamataApiGenerazioneGpt(colloquio);
         // Aggiungi la domanda generata alla lista di domande del colloquio
+
+
         colloquio.getDomandaList().add(domandaGenerata);
         // Salva il colloquio nel database
         colloquioRepository.save(colloquio);
+
+
+         */
         return domandaGenerata;
     }
 
@@ -44,13 +56,26 @@ public class ChatGptService implements GptService{
         // Crea un prompt basato sull'argomento del colloquio.....AGGIUNGERE IL NUMERO DI DOMANDE
         String prompt = "Simula 1 domanda di un colloquio di lavoro su: " + colloquio.getArgomentoColloquio();
         //risposta generata da GPT utilizzando il prompt
-        String gptResponse = generateGptResponse(prompt);
+        //DECOMMENTARE DOPO TEST String gptResponse = generateGptResponse(prompt);
         // Crea una nuova domanda con il testo generato da GPT
-        Domanda nuovaDomanda = new Domanda();
+
+
+        //TEST: ////////////////////////////
+        String gptResponse  = "Domanda di colloquio generata da GPT";
+        ////////////////////////////////////
+
+        Domanda nuovaDomanda = new Domanda(gptResponse);
+        nuovaDomanda.setColloquio(colloquio);
+
+        domandaRepository.save(nuovaDomanda);
+
+
+/*
         //setto il colloquio nella domanda
         nuovaDomanda.setColloquio(colloquio);
         nuovaDomanda.setTestoDomanda(gptResponse);
-        return nuovaDomanda;
+*/
+         return nuovaDomanda;
     }
 
     @Override
@@ -58,25 +83,35 @@ public class ChatGptService implements GptService{
         // prompt per GPT
         String prompt = "Dammi un parere di una riga della risposta: " + rispostaUtente.getTestoRisposta() + " alla seguente domanda :" + domanda.getTestoDomanda() + " .Infine dammi anche un punteggio da 1 a 9 scrivendolo sempre su una nuova riga e sempre nel formato PUNTEGGIO:punteggio";
         // Ottiene una valutazione da GPT
-        String commento = generateGptResponse(prompt);
+      //DECOMMENTARE DOPO TEST SALVATAGGIO   String commento = generateGptResponse(prompt);
         // Estrae il punteggio dalla risposta
-        int punteggio = estrarrePunteggioDaRispostaGpt(commento);
+      // DECOMMENTARE DOPO TEST SALVATAGGIO (Long) int punteggio = estrarrePunteggioDaRispostaGpt(commento);
 
+        //TEST: ////////////////////////////
+        String commento = "Risposta da GPT (Commento)";
+        int punteggio = 7;
+        ///////////////////////////////////
+       // Utente utente = colloquio.getUtente();
 
         rispostaUtente.setTestoRisposta(rispostaUtente.getTestoRisposta());
         rispostaUtente.setTestoValutazioneGpt(commento);
         rispostaUtente.setPunteggio(punteggio);
-        rispostaUtente.setId(colloquio.getUtente().getId());
+
+        //NUOVO CODICe
+        rispostaUtente.setDomanda(domanda);
+        rispostaRepository.save(rispostaUtente);
+
+       // rispostaUtente.setUtenteId(colloquio.getUtente());
         ///////
         domanda.setRisposta(rispostaUtente);
-        rispostaUtente.setDomanda(domanda);
-
-
-
         domandaRepository.save(domanda);
-        rispostaRepository.save(rispostaUtente);;
-        colloquioRepository.save(colloquio);
 
+
+//VECCHIO CODICE
+ //       domandaRepository.save(domanda);
+ //       rispostaRepository.save(rispostaUtente);;
+ //       colloquioRepository.save(colloquio);
+ //       utenteRepository.save(utente);
         return commento;
 
     }

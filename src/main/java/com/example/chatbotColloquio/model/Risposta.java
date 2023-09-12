@@ -29,9 +29,14 @@ public class Risposta {
     @OneToOne
     @JoinColumn(name = "domanda_id")
     private Domanda domanda;
+
+    /*
     @ManyToOne
     @JoinColumn(name = "utente_id")
     private Utente utente;
+
+*/
+
 
     public Risposta(String testoRisposta){
         this.testoRisposta = testoRisposta;
@@ -51,7 +56,7 @@ public class Risposta {
     }
 
     public void setId(Long id) {
-        this.id = id;
+    this.id = id;
     }
 
     public String getTestoRisposta() {
@@ -85,4 +90,18 @@ public class Risposta {
     public void setDomanda(Domanda domanda) {
         this.domanda = domanda;
     }
+
+
+    //AGGIUTO ID UTENTE IN RISPOSTA
+
+    /*
+    public void setUtenteId(Utente u){
+        this.utente.setId(u.getId());
+    }
+
+    public void setUtente(Utente utente) {
+        this.utente = utente;
+    }
+
+     */
 }

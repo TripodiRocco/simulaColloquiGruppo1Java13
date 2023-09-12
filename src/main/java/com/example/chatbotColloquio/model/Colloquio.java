@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -26,14 +25,16 @@ public class Colloquio {
     @Column(nullable = false)
     private String argomentoColloquio;
 
+    @ManyToOne
+    @JoinColumn(name = "utente_id")
+    private Utente utente;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "colloquio",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Domanda> domande = new ArrayList<>() ;
 
 
-    @ManyToOne
-    @JoinColumn(name = "utente_id")
-    private Utente utente;
+
 
 
     public Colloquio(Long id, LocalDateTime orario, Integer difficolta, String argomentoColloquio) {
@@ -94,4 +95,6 @@ public class Colloquio {
     public Utente getUtente() {
         return utente;
     }
+
+
 }

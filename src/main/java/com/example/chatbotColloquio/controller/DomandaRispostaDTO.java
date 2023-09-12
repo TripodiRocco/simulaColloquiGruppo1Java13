@@ -2,18 +2,18 @@ package com.example.chatbotColloquio.controller;
 
 public class DomandaRispostaDTO {
 
-    private Long idColloquio;
+  //  private Long idColloquio;
     private String domanda;
     private String testoRisposta;
     private String testoValutazioneGpt;
 
-    public DomandaRispostaDTO(Long id, String testoDomanda, String rispostaText, String valutazioneGpt) {
-        this.idColloquio=id;
+    public DomandaRispostaDTO(String testoDomanda, String rispostaText, String valutazioneGpt) {
+       // this.idColloquio  = id;
         this.domanda=testoDomanda;
         this.testoRisposta=rispostaText;
         this.testoValutazioneGpt = valutazioneGpt;
     }
-
+/*
     public Long getIdColloquio() {
         return idColloquio;
     }
@@ -21,7 +21,7 @@ public class DomandaRispostaDTO {
     public void setIdColloquio(Long idColloquio) {
         this.idColloquio = idColloquio;
     }
-
+*/
     public String getDomanda() {
         return domanda;
     }

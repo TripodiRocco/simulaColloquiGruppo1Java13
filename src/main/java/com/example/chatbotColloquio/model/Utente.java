@@ -1,7 +1,10 @@
 package com.example.chatbotColloquio.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,12 +28,24 @@ public class Utente {
     private String cognome;
 
 
-    @OneToMany(mappedBy = "utente")
-    private List<Colloquio> colloqui;
 
-    @OneToMany(mappedBy = "utente")
-    private List<Risposta> risposte;
+    //@JsonManagedReference
+    //    @OneToMany(mappedBy = "utente",cascade = CascadeType.ALL,orphanRemoval = true)
 
+    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
+    private List<Colloquio> colloqui = new ArrayList<>();
+
+
+
+    //@JsonProperty("colloqui")
+    public List<Colloquio> getColloqui() {
+        return this.colloqui;
+    }
+
+
+    public void setColloqui(List<Colloquio> colloqui) {
+        this.colloqui = colloqui;
+    }
 
     public Utente(String username, String password, String nome, String cognome) {
         this.username = username;
