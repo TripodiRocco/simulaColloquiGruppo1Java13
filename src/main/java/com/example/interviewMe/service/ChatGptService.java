@@ -21,7 +21,7 @@ import java.net.URL;
 public class ChatGptService implements GptService{
     // private static final String GPT_API_URL = "https://api.openai.com/v1/engines/gpt-3.5-turbo/completions";
     private static final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
-    private String apiKey = "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"; // chiave API
+    private String apiKey = ""; // chiave API
     private String model = "gpt-3.5-turbo";
 
     @Autowired
