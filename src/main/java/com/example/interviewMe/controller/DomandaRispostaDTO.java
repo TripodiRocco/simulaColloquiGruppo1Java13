@@ -1,4 +1,4 @@
-package com.example.chatbotColloquio.controller;
+package com.example.interviewMe.controller;
 
 public class DomandaRispostaDTO {
 

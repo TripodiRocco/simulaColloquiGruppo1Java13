@@ -1,8 +1,8 @@
-package com.example.chatbotColloquio.service;
+package com.example.interviewMe.service;
 
-import com.example.chatbotColloquio.model.Colloquio;
-import com.example.chatbotColloquio.model.Domanda;
-import com.example.chatbotColloquio.repository.ColloquioRepository;
+import com.example.interviewMe.model.Colloquio;
+import com.example.interviewMe.model.Domanda;
+import com.example.interviewMe.repository.ColloquioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

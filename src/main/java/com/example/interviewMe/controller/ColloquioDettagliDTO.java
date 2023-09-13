@@ -1,4 +1,4 @@
-package com.example.chatbotColloquio.controller;
+package com.example.interviewMe.controller;
 
 import java.util.List;
 

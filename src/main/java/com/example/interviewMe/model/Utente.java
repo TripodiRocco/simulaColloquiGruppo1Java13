@@ -1,8 +1,7 @@
-package com.example.chatbotColloquio.model;
+package com.example.interviewMe.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +14,19 @@ public class Utente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(nullable = false)
     private String username;
 
+    @NotNull
     @Column(nullable = false)
     private String password;
 
+    @NotNull
     @Column(nullable = false)
     private String nome;
 
+    @NotNull
     @Column(nullable = false)
     private String cognome;
 

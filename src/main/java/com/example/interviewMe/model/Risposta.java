@@ -1,4 +1,4 @@
-package com.example.chatbotColloquio.model;
+package com.example.interviewMe.model;
 
 import jakarta.persistence.*;
 

@@ -1,10 +1,8 @@
-package com.example.chatbotColloquio.repository;
+package com.example.interviewMe.repository;
 
-import com.example.chatbotColloquio.model.Colloquio;
+import com.example.interviewMe.model.Colloquio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface ColloquioRepository extends JpaRepository<Colloquio, Long> {

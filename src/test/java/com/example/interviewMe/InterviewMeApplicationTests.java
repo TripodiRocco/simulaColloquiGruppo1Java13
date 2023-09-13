@@ -1,10 +1,10 @@
-package com.example.chatbotColloquio;
+package com.example.interviewMe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ChatbotColloquioApplicationTests {
+class InterviewMeApplicationTests {
 
 	@Test
 	void contextLoads() {

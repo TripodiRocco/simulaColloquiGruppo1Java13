@@ -1,13 +1,12 @@
-package com.example.chatbotColloquio.service;
+package com.example.interviewMe.service;
 
-import com.example.chatbotColloquio.model.Colloquio;
-import com.example.chatbotColloquio.model.Domanda;
-import com.example.chatbotColloquio.model.Risposta;
-import com.example.chatbotColloquio.model.Utente;
-import com.example.chatbotColloquio.repository.ColloquioRepository;
-import com.example.chatbotColloquio.repository.DomandaRepository;
-import com.example.chatbotColloquio.repository.RispostaRepository;
-import com.example.chatbotColloquio.repository.UtenteRepository;
+import com.example.interviewMe.model.Colloquio;
+import com.example.interviewMe.model.Domanda;
+import com.example.interviewMe.model.Risposta;
+import com.example.interviewMe.repository.ColloquioRepository;
+import com.example.interviewMe.repository.DomandaRepository;
+import com.example.interviewMe.repository.RispostaRepository;
+import com.example.interviewMe.repository.UtenteRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

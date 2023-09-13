@@ -55,7 +55,7 @@
 			<version>8.1.0</version>
 		</dependency>
 
-		<!-- dipendenza corretta (dovrebbe essere) per swagger -->
+		<!-- dipendenza corretta per swagger -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

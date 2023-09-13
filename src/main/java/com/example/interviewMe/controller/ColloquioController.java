@@ -1,15 +1,15 @@
-package com.example.chatbotColloquio.controller;
+package com.example.interviewMe.controller;
 
-import com.example.chatbotColloquio.model.Risposta;
-import com.example.chatbotColloquio.model.Domanda;
-import com.example.chatbotColloquio.model.Colloquio;
-import com.example.chatbotColloquio.model.Utente;
-import com.example.chatbotColloquio.repository.ColloquioRepository;
-import com.example.chatbotColloquio.repository.DomandaRepository;
-import com.example.chatbotColloquio.repository.RispostaRepository;
-import com.example.chatbotColloquio.repository.UtenteRepository;
-import com.example.chatbotColloquio.service.ColloquioService;
-import com.example.chatbotColloquio.service.GptService;
+import com.example.interviewMe.model.Risposta;
+import com.example.interviewMe.model.Domanda;
+import com.example.interviewMe.model.Colloquio;
+import com.example.interviewMe.model.Utente;
+import com.example.interviewMe.repository.ColloquioRepository;
+import com.example.interviewMe.repository.DomandaRepository;
+import com.example.interviewMe.repository.RispostaRepository;
+import com.example.interviewMe.repository.UtenteRepository;
+import com.example.interviewMe.service.ColloquioService;
+import com.example.interviewMe.service.GptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +137,7 @@ public class ColloquioController {
 
 
     @GetMapping("/{colloquioId}/visualizzaDomande")
+    @Operation(summary = "Inserito l'identificativo del colloquio, vengono visualizzate domanda, risposta e valutazione del recruiter")
     public ResponseEntity<List<DomandaRispostaDTO>> getDomandeERisposteByColloquio(@PathVariable Long colloquioId) {
         Optional<Colloquio> colloquioOptional = colloquioRepository.findById(colloquioId);
 
@@ -210,6 +211,7 @@ public class ColloquioController {
 
     //FUNZIONANTE
     @GetMapping("/{userId}/dettagli")
+    @Operation(summary = "Inserito l'identificativo dell'utente, permette di ricevere un report organizzato contenente nel dettaglio identificativo del colloquio, domande, risposte e valutazione del recruiter per quell'utente specifico")
     public ResponseEntity<UtenteDettagliDTO> getUtentiDettagli(@PathVariable Long userId) {
       //  Utente utente = utenteRepository.findById(userId).orElse(null);
         Optional<Utente> utenteOptional = utenteRepository.findById(userId);

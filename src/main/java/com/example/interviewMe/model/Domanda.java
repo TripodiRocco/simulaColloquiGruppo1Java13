@@ -1,7 +1,6 @@
-package com.example.chatbotColloquio.model;
+package com.example.interviewMe.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity

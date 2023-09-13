@@ -1,6 +1,6 @@
-package com.example.chatbotColloquio.repository;
+package com.example.interviewMe.repository;
 
-import com.example.chatbotColloquio.model.Risposta;
+import com.example.interviewMe.model.Risposta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
-package com.example.chatbotColloquio.controller;
+package com.example.interviewMe.controller;
 
-import com.example.chatbotColloquio.model.Utente;
-import com.example.chatbotColloquio.repository.UtenteRepository;
-import com.example.chatbotColloquio.service.UtenteService;
+import com.example.interviewMe.model.Utente;
+import com.example.interviewMe.repository.UtenteRepository;
+import com.example.interviewMe.service.UtenteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.chatbotColloquio.model;
+package com.example.interviewMe.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
