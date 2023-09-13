@@ -97,4 +97,7 @@ public class Colloquio {
     }
 
 
+    public Integer getDifficolta() {
+        return this.difficolta;
+    }
 }

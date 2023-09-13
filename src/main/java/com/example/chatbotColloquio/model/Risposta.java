@@ -11,10 +11,10 @@ public class Risposta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1023)
     private String testoRisposta;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length =  1023)
     private String testoValutazioneGpt;
 
 
