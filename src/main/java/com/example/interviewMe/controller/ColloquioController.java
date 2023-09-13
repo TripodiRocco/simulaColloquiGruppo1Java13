@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -47,56 +49,18 @@ public class ColloquioController {
     @PostMapping("/inizia/{utenteId}")
     @Operation(summary = "Inserito l'identificativo dell'utente da colloquiare, permette di iniziare il colloquio rivelando la domanda")
     public ResponseEntity<String> iniziaColloquio(@PathVariable Long utenteId, @RequestParam String argomentoColloquio, @RequestParam int difficolta) {
-
-       Optional<Utente> utente = utenteRepository.findById(utenteId);
-
-
-
+        Optional<Utente> utente = utenteRepository.findById(utenteId);
        if(!utente.isPresent()){
            return ResponseEntity.notFound().build();
         }
+       Colloquio nuovoColloquio = new Colloquio();
+       nuovoColloquio.setUtente(utente.get());
+       nuovoColloquio.setArgomentoColloquio(argomentoColloquio);
+       nuovoColloquio.setDifficolta(difficolta);
+       LocalDateTime now = LocalDateTime.now();
+       nuovoColloquio.setOrario(now);
 
-
-        Colloquio nuovoColloquio = new Colloquio();
-
-        nuovoColloquio.setUtente(utente.get());
-
-        nuovoColloquio.setArgomentoColloquio(argomentoColloquio);
-        nuovoColloquio.setDifficolta(difficolta);
-        LocalDateTime nuovoOrario = LocalDateTime.of(2023, 8, 30, 10, 0);
-        nuovoColloquio.setOrario(nuovoOrario);
-
-
-
-        /*
-        //bisogna salvare il colloquio nella lista di colloqui presente
-          nella entity colloquio e forse non il contrario come fatto su
-
-          adesso si parte da colloquio e si salva l'utente in colloquio
-          ma bisogna partire da utente e salvare i colloqui nella lista
-
-          STRUTTURA:
-          ---------------------------------
-          utente_id:
-          ---------------------------------
-                colloquio1:
-                    Domanda1:
-                        RispostaUtente
-                        ValutazioneGPT
-                    Domanda2:
-                        RispostaUtente
-                        ValutazioneGPT
-          ---------------------------------
-                colloquio2:
-                    Domanda1:
-                        RispostaUtente
-                        ValutazioneGPT
-          ---------------------------------
-
-        utente.setColloquio(colloquio);
-        utenteRepository.save(utente);
-        */
-        Domanda primaDomanda = gptService.generaDomanda(nuovoColloquio);
+       Domanda primaDomanda = gptService.generaDomanda(nuovoColloquio);
 
         // Restituisci la prima domanda come risposta al client
         return ResponseEntity.ok("Colloquio ID: " +nuovoColloquio.getId() + "\n" + primaDomanda.getTestoDomanda());

@@ -21,7 +21,10 @@ import java.net.URL;
 public class ChatGptService implements GptService{
     // private static final String GPT_API_URL = "https://api.openai.com/v1/engines/gpt-3.5-turbo/completions";
     private static final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
+
     private String apiKey = ""; // chiave API
+
+
     private String model = "gpt-3.5-turbo";
 
     @Autowired
@@ -53,27 +56,25 @@ public class ChatGptService implements GptService{
 
     private Domanda chiamataApiGenerazioneGpt(Colloquio colloquio) {
         // Crea un prompt basato sull'argomento del colloquio.....AGGIUNGERE IL NUMERO DI DOMANDE
-        String prompt = "Simula 1 domanda di un colloquio di lavoro su: " + colloquio.getArgomentoColloquio();
+        String prompt = "Fammi 1 domanda di un colloquio di lavoro su: " + colloquio.getArgomentoColloquio() + " di difficoltà " + colloquio.getDifficolta() + " su 9";
         //risposta generata da GPT utilizzando il prompt
-        //DECOMMENTARE DOPO TEST String gptResponse = generateGptResponse(prompt);
+        //DECOMMENTARE DOPO TEST
+        String gptResponse = generateGptResponse(prompt);
         // Crea una nuova domanda con il testo generato da GPT
 
 
         //TEST: ////////////////////////////
+        /*
         String gptResponse  = "Domanda di colloquio generata da GPT";
         ////////////////////////////////////
 
+
+         */
         Domanda nuovaDomanda = new Domanda(gptResponse);
         nuovaDomanda.setColloquio(colloquio);
 
         domandaRepository.save(nuovaDomanda);
 
-
-/*
-        //setto il colloquio nella domanda
-        nuovaDomanda.setColloquio(colloquio);
-        nuovaDomanda.setTestoDomanda(gptResponse);
-*/
          return nuovaDomanda;
     }
 
@@ -82,14 +83,20 @@ public class ChatGptService implements GptService{
         // prompt per GPT
         String prompt = "Dammi un parere di una riga della risposta: " + rispostaUtente.getTestoRisposta() + " alla seguente domanda :" + domanda.getTestoDomanda() + " .Infine dammi anche un punteggio da 1 a 9 scrivendolo sempre su una nuova riga e sempre nel formato PUNTEGGIO:punteggio";
         // Ottiene una valutazione da GPT
-      //DECOMMENTARE DOPO TEST SALVATAGGIO   String commento = generateGptResponse(prompt);
+      //DECOMMENTARE DOPO TEST SALVATAGGIO
+        String commento = generateGptResponse(prompt);
         // Estrae il punteggio dalla risposta
-      // DECOMMENTARE DOPO TEST SALVATAGGIO (Long) int punteggio = estrarrePunteggioDaRispostaGpt(commento);
+      // DECOMMENTARE DOPO TEST SALVATAGGIO (Long)
+        int punteggio = estrarrePunteggioDaRispostaGpt(commento);
+
 
         //TEST: ////////////////////////////
+        /*
         String commento = "Risposta da GPT (Commento)";
         int punteggio = 7;
         ///////////////////////////////////
+
+         */
        // Utente utente = colloquio.getUtente();
 
         rispostaUtente.setTestoRisposta(rispostaUtente.getTestoRisposta());
@@ -105,12 +112,6 @@ public class ChatGptService implements GptService{
         domanda.setRisposta(rispostaUtente);
         domandaRepository.save(domanda);
 
-
-//VECCHIO CODICE
- //       domandaRepository.save(domanda);
- //       rispostaRepository.save(rispostaUtente);;
- //       colloquioRepository.save(colloquio);
- //       utenteRepository.save(utente);
         return commento;
 
     }
