@@ -19,9 +19,6 @@ import java.util.Optional;
 public class UtenteController {
 
     @Autowired
-    UtenteRepository utenteRepository;
-
-    @Autowired
     UtenteService utenteService;
 
     //READ USER BY ID
@@ -29,8 +26,7 @@ public class UtenteController {
     @GetMapping(value = "/findById/{id}")
     @Operation(summary = "Ricerca un utente specifico inserendo il suo identificativo")
     public ResponseEntity<Optional<Utente>> ricercaUtente(@PathVariable Long id){
-        Optional<Utente> utenteOptional = utenteRepository.findById(id);
-        // Utente utente = utenteRepository.findById(id).orElse(null);              // SOSTITUZIONE CON OPTIONAL
+        Optional<Utente> utenteOptional = utenteService.getUtente(id);
         if(!utenteOptional.isPresent()){
             return ResponseEntity.notFound().build();
         }
@@ -41,7 +37,7 @@ public class UtenteController {
     @GetMapping(value = "/listaDiUtenti")
     @Operation(summary = "Ritorna indietro un elenco degli utenti memorizzato nel database")
     public ResponseEntity<?> ottieniListaUtenti(){
-        List<Utente> listaDiUtenti = utenteRepository.findAll();
+        List<Utente> listaDiUtenti = utenteService.getAllUtenti();
 
         if (listaDiUtenti.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -55,14 +51,14 @@ public class UtenteController {
     @PostMapping(value = "/creaUtente")
     @Operation(summary = "Crea un utente inserendo i parametri richiesti, seguendo l'esempio")
     public ResponseEntity<Utente> creaUtente(@RequestBody Utente utente){
-        Utente nuovoUtente = utenteRepository.save(utente);
+        Utente nuovoUtente = utenteService.insertUtente(utente);
         return ResponseEntity.ok(nuovoUtente);
     }
 
 
     // DA ELIMINARE IN SEGUITO, SOLO PER PROVA
 
-    @GetMapping(value = "/aggiungiUtenti")
+    @PostMapping(value = "/aggiungiUtenti")
     @Operation(summary = "Carica un elenco di utenti pronto per essere memorizzato nel database")
     public ResponseEntity<String> aggiungiUtente(){
         Utente utente1 = new Utente("rocchino", "ciao", "Rocco", "Tripodi");
@@ -70,10 +66,10 @@ public class UtenteController {
         Utente utente3 = new Utente("vincenzino", "ciao3", "Vincenzo", "Merola");
         Utente utente4 = new Utente("pietrino", "ciao4", "Pietro", "Benedicenti");
 
-        utenteRepository.save(utente1);
-        utenteRepository.save(utente2);
-        utenteRepository.save(utente3);
-        utenteRepository.save(utente4);
+        utenteService.insertUtente(utente1);
+        utenteService.insertUtente(utente2);
+        utenteService.insertUtente(utente3);
+        utenteService.insertUtente(utente4);
 
         return ResponseEntity.ok("lista utenti creata");
     }
