@@ -10,6 +10,7 @@ import com.example.interviewMe.repository.RispostaRepository;
 import com.example.interviewMe.repository.UtenteRepository;
 import com.example.interviewMe.service.ColloquioService;
 import com.example.interviewMe.service.GptService;
+import com.example.interviewMe.service.UtenteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +29,19 @@ import java.util.Optional;
 @RestController
 @Tag(name = "Gestione colloquio", description = "API per la gestione del colloquio")
 public class ColloquioController {
-
-    @Autowired
-    private DomandaRepository domandaRepository;
-
-    @Autowired
-    private RispostaRepository rispostaRepository;
     @Autowired
     private ColloquioService colloquioService;
     @Autowired
     private GptService gptService;
 
     @Autowired
-    private ColloquioRepository colloquioRepository;    // cancellare
-
-    @Autowired
-    private UtenteRepository utenteRepository;  // cancellare
+    UtenteService utenteService;
 
 
     @PostMapping("/inizia/{utenteId}")
     @Operation(summary = "Inserito l'identificativo dell'utente da colloquiare, permette di iniziare il colloquio rivelando la domanda")
     public ResponseEntity<String> iniziaColloquio(@PathVariable Long utenteId, @RequestParam String argomentoColloquio, @RequestParam int difficolta) {
-        Optional<Utente> utente = utenteRepository.findById(utenteId);
+        Optional<Utente> utente = utenteService.getUtente(utenteId);
        if(!utente.isPresent()){
            return ResponseEntity.notFound().build();
         }
@@ -71,7 +63,7 @@ public class ColloquioController {
     @PostMapping("/risposta/{colloquioId}")
     @Operation(summary = "Inserito l'identificativo dell'utente, egli può rispondere alla domanda posta dal recruiter, che assegna un punteggio da 1 a 9 al candidato per il grado di conoscenza a cui segue un commento; e si prosegue con la prossima domanda")
     public ResponseEntity<String> gestisciRisposta(@PathVariable Long colloquioId ,@RequestBody String rispostaTesto) {
-        Optional<Colloquio> colloquioOptional = colloquioRepository.findById(colloquioId);
+        Optional<Colloquio> colloquioOptional = colloquioService.colloquioById(colloquioId);
 
         if (colloquioOptional.isPresent()) {
             Colloquio colloquio = colloquioOptional.get();
@@ -103,7 +95,7 @@ public class ColloquioController {
     @GetMapping("/{colloquioId}/visualizzaDomande")
     @Operation(summary = "Inserito l'identificativo del colloquio, vengono visualizzate domanda, risposta e valutazione del recruiter")
     public ResponseEntity<List<DomandaRispostaDTO>> getDomandeERisposteByColloquio(@PathVariable Long colloquioId) {
-        Optional<Colloquio> colloquioOptional = colloquioRepository.findById(colloquioId);
+        Optional<Colloquio> colloquioOptional = colloquioService.colloquioById(colloquioId);
 
         if (colloquioOptional.isPresent()) {
             Colloquio colloquio = colloquioOptional.get();
@@ -178,7 +170,7 @@ public class ColloquioController {
     @Operation(summary = "Inserito l'identificativo dell'utente, permette di ricevere un report organizzato contenente nel dettaglio identificativo del colloquio, domande, risposte e valutazione del recruiter per quell'utente specifico")
     public ResponseEntity<UtenteDettagliDTO> getUtentiDettagli(@PathVariable Long userId) {
       //  Utente utente = utenteRepository.findById(userId).orElse(null);
-        Optional<Utente> utenteOptional = utenteRepository.findById(userId);
+        Optional<Utente> utenteOptional = utenteService.getUtente(userId);
 
       //  if (utente != null) {
         if(utenteOptional.isPresent()){

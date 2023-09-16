@@ -14,6 +14,11 @@ import java.util.Optional;
 public class ColloquioService {
     @Autowired
     private  ColloquioRepository colloquioRepository;
+    public Optional<Colloquio> colloquioById(Long id){
+        Optional<Colloquio> colloquioOptional = colloquioRepository.findById(id);
+        return  colloquioOptional;
+    }
+
 
 
     public Optional<List<Domanda>> getDomandeRisposteByColloquio(Long colloquioId) {
