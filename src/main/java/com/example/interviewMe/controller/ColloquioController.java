@@ -12,6 +12,7 @@ import com.example.interviewMe.service.ColloquioService;
 import com.example.interviewMe.service.GptService;
 import com.example.interviewMe.service.UtenteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,7 @@ public class ColloquioController {
 
     @PostMapping("/inizia/{utenteId}")
     @Operation(summary = "Inserito l'identificativo dell'utente da colloquiare, permette di iniziare il colloquio rivelando la domanda")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Colloquio iniziato")
     public ResponseEntity<String> iniziaColloquio(@PathVariable Long utenteId, @RequestParam String argomentoColloquio, @RequestParam int difficolta) {
         Optional<Utente> utente = utenteService.getUtente(utenteId);
        if(!utente.isPresent()){
@@ -62,6 +64,7 @@ public class ColloquioController {
 
     @PostMapping("/risposta/{colloquioId}")
     @Operation(summary = "Inserito l'identificativo dell'utente, egli può rispondere alla domanda posta dal recruiter, che assegna un punteggio da 1 a 9 al candidato per il grado di conoscenza a cui segue un commento; e si prosegue con la prossima domanda")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Risposta alla domanda inviata con successo")
     public ResponseEntity<String> gestisciRisposta(@PathVariable Long colloquioId ,@RequestBody String rispostaTesto) {
         Optional<Colloquio> colloquioOptional = colloquioService.colloquioById(colloquioId);
 
@@ -94,6 +97,7 @@ public class ColloquioController {
 
     @GetMapping("/{colloquioId}/visualizzaDomande")
     @Operation(summary = "Inserito l'identificativo del colloquio, vengono visualizzate domanda, risposta e valutazione del recruiter")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Dati di domande, risposte e valutazione del recruiter ottenuti con successo")
     public ResponseEntity<List<DomandaRispostaDTO>> getDomandeERisposteByColloquio(@PathVariable Long colloquioId) {
         Optional<Colloquio> colloquioOptional = colloquioService.colloquioById(colloquioId);
 
@@ -168,6 +172,7 @@ public class ColloquioController {
     //FUNZIONANTE
     @GetMapping("/{userId}/dettagli")
     @Operation(summary = "Inserito l'identificativo dell'utente, permette di ricevere un report organizzato contenente nel dettaglio identificativo del colloquio, domande, risposte e valutazione del recruiter per quell'utente specifico")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Report ottenuto con successo")
     public ResponseEntity<UtenteDettagliDTO> getUtentiDettagli(@PathVariable Long userId) {
       //  Utente utente = utenteRepository.findById(userId).orElse(null);
         Optional<Utente> utenteOptional = utenteService.getUtente(userId);

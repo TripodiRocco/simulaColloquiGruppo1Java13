@@ -4,6 +4,7 @@ import com.example.interviewMe.model.Utente;
 import com.example.interviewMe.repository.UtenteRepository;
 import com.example.interviewMe.service.UtenteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class UtenteController {
 
     @GetMapping(value = "/findById/{id}")
     @Operation(summary = "Ricerca un utente specifico inserendo il suo identificativo")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Ricerca effettuata con successo")
     public ResponseEntity<Optional<Utente>> ricercaUtente(@PathVariable Long id){
         Optional<Utente> utenteOptional = utenteService.getUtente(id);
         if(!utenteOptional.isPresent()){
@@ -36,6 +38,7 @@ public class UtenteController {
     //READ ALL
     @GetMapping(value = "/listaDiUtenti")
     @Operation(summary = "Ritorna indietro un elenco degli utenti memorizzato nel database")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Elenco utenti restituito con successo")
     public ResponseEntity<?> ottieniListaUtenti(){
         List<Utente> listaDiUtenti = utenteService.getAllUtenti();
 
@@ -50,6 +53,7 @@ public class UtenteController {
     //CREATE
     @PostMapping(value = "/creaUtente")
     @Operation(summary = "Crea un utente inserendo i parametri richiesti, seguendo l'esempio")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Utente creato con successo")
     public ResponseEntity<Utente> creaUtente(@RequestBody Utente utente){
         Utente nuovoUtente = utenteService.insertUtente(utente);
         return ResponseEntity.ok(nuovoUtente);
@@ -60,6 +64,7 @@ public class UtenteController {
 
     @PostMapping(value = "/aggiungiUtenti")
     @Operation(summary = "Carica un elenco di utenti pronto per essere memorizzato nel database")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Utenti memorizzati nel database con successo")
     public ResponseEntity<String> aggiungiUtente(){
         Utente utente1 = new Utente("rocchino", "ciao", "Rocco", "Tripodi");
         Utente utente2 = new Utente("giuseppino", "ciao2", "Giuseppe", "Bronzellino");
@@ -77,6 +82,7 @@ public class UtenteController {
     //UPDATE
     @PutMapping(value = "/modificaUtente/{id}")
     @Operation(summary = "Modifica identificativo e altri parametri di un utente")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Modifica dell'utente avvenuta con successo")
     public ResponseEntity<Utente> modificaUtente(@PathVariable Long id, @RequestBody Utente utente){
 
         Optional<Utente> aggiornaUtente = utenteService.updateUtente(id, utente);
@@ -91,6 +97,7 @@ public class UtenteController {
 
     @DeleteMapping(value = "/eliminaUtente/{id}")
     @Operation(summary = "Elimina l'intero utente")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Eliminazione dell'utente avvenuta con successo")
     public ResponseEntity<String> eliminaUtente(@PathVariable Long id) {
 
         try {

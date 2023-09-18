@@ -1,6 +1,7 @@
 package com.example.interviewMe.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -11,13 +12,15 @@ public class Risposta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(nullable = false, length = 1023)
     private String testoRisposta;
 
+    @NotNull
     @Column(nullable = false, length =  1023)
     private String testoValutazioneGpt;
 
-
+    @NotNull
     @Column(nullable = false)
     private Integer punteggio; //serve a salvare la valutazione della risposta
 

@@ -2,6 +2,7 @@ package com.example.interviewMe.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table (name = "domanda")
@@ -11,6 +12,7 @@ public class Domanda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(nullable = false, length =  1023)
     private String testoDomanda;
 

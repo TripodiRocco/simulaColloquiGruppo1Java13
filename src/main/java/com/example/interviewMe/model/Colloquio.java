@@ -3,6 +3,7 @@ package com.example.interviewMe.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,12 +17,15 @@ public class Colloquio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(nullable = false)
     private LocalDateTime orario;
 
+    @NotNull
     @Column(nullable = false)
     private Integer difficolta;
 
+    @NotNull
     @Column(nullable = false)
     private String argomentoColloquio;
 
