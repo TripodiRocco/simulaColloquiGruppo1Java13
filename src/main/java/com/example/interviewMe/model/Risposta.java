@@ -49,6 +49,11 @@ public class Risposta {
         this.testoRisposta = testoRisposta;
         this.punteggio = punteggio;
     }
+    public Risposta(String testoRisposta, Integer punteggio,String testoValutazioneGpt) {
+        this.testoRisposta = testoRisposta;
+        this.punteggio = punteggio;
+        this.testoValutazioneGpt = testoValutazioneGpt;
+    }
 
     public Risposta(){
 
