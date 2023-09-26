@@ -20,7 +20,7 @@ public class RispostaController {
     @Autowired
     RispostaService rispostaService;
 
-    //READ USER BY ID
+    //READ RISPOSTA BY ID
 
     @GetMapping(value = "/findRispostaById/{id}")
     @Operation(summary = "Ricerca una risposta specifica inserendo il suo identificativo")
@@ -48,21 +48,11 @@ public class RispostaController {
     }
 
 
-    //CREATE da fixare
-    /*@PostMapping(value = "/creaRispposta")
-    @Operation(summary = "Crea una risposta inserendo i parametri richiesti, seguendo l'esempio")
-    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Risposta creata con successo")
-    public ResponseEntity<Risposta> creaRisposta(@RequestBody Risposta risposta){
-        Risposta r = rispostaService.insertRisposte(risposta);
-        return ResponseEntity.ok(r);
-    }*/
-
-
     // DA ELIMINARE IN SEGUITO, SOLO PER PROVA
 
     @PostMapping(value = "/aggiungiRisposte")
     @Operation(summary = "Carica un elenco di risposte pronto per essere memorizzato nel database")
-    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Utenti memorizzati nel database con successo")
+    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Risposte memorizzate nel database con successo")
     public ResponseEntity<String> aggiungiRisposte(){
         Risposta r1 = new Risposta("questa e la prima risposta",70,"qui andra l valutazione di charGpt");
         Risposta r2 = new Risposta("questa e la seconda risposta",1,"qui andra l valutazione di charGpt");
@@ -74,20 +64,6 @@ public class RispostaController {
 
         return ResponseEntity.ok("lista risposte create");
     }
-
-    //UPDATE da fixare
-    /*@PutMapping(value = "/modificaRisposta/{id}")
-    @Operation(summary = "Modifica identificativo e altri parametri di una risposta")
-    @ApiResponse(responseCode = "200", description = "Con codice 200 OK: Modifica della risposta e avvenuta con successo")
-    public ResponseEntity<Risposta> modificaRisposta(@PathVariable Long id, @RequestBody Risposta risposta){
-
-        Optional<Risposta> aggiornaRisposta = rispostaService.updateRisposte(id, risposta);
-
-        if (aggiornaRisposta.isPresent()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(aggiornaRisposta.get());
-    }*/
 
     //DELETE
 

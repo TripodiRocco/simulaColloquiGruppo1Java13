@@ -14,8 +14,8 @@ public class RispostaService {
     @Autowired
     RispostaRepository rispostaRepository;
     public Optional<Risposta> getRisposta(Long id){
-        Optional<Risposta> utenteOptional = rispostaRepository.findById(id);
-        return utenteOptional;
+        Optional<Risposta> rispostaOptional = rispostaRepository.findById(id);
+        return rispostaOptional;
     }
     public List<Risposta> getAllRisposte(){
         List<Risposta> listaDiRisposte = rispostaRepository.findAll();
@@ -26,25 +26,9 @@ public class RispostaService {
         return r;
     }
 
-
-    public Optional<Risposta> updateRisposte(Long id, Risposta risposta){
-        Optional<Risposta> r = rispostaRepository.findById(id);
-
-        if(r.isPresent()) {
-            r.get().setTestoRisposta(risposta.getTestoRisposta());
-            r.get().setPunteggio(risposta.getPunteggio());
-            r.get().setTestoValutazioneGpt(risposta.getTestoValutazioneGpt());
-
-            rispostaRepository.save(r.get());
-            return r;
-        }else
-            return Optional.empty();
-
-    }
-
     public Risposta deleteRisposte(Long id){
         Risposta r = rispostaRepository.findById(id).orElse(null);
-        assert r != null;    // DA VEDERE ANCHE QUI SE SOSTITUIRE O MENO
+        assert r != null;
         rispostaRepository.delete(r);
         return  r;
     }
